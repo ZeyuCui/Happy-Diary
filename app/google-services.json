@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "185731922377",
+    "firebase_url": "https://happydiary-fc1a3-default-rtdb.firebaseio.com",
+    "project_id": "happydiary-fc1a3",
+    "storage_bucket": "happydiary-fc1a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185731922377:android:ce848a6db72c8337ab9018",
+        "android_client_info": {
+          "package_name": "com.example.happydiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185731922377-or9q6o4sn1bkq78q3l8jg18otkbts7eb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ0VVMwmpqc-fY06lo6kSWL8ZAmd64mpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185731922377-or9q6o4sn1bkq78q3l8jg18otkbts7eb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

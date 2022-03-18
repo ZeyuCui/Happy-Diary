@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">HappyDiaryy</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="happy_diary">Happy Diary</string>
+    <string name="email">Email</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="pasword">Pasword</string>
+</resources>
