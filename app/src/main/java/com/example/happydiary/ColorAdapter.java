@@ -44,7 +44,7 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.MyVH> {
                 SP.getInstance(context).saveInt("theme", list.get(position));
                 ((Activity)context).finish();
             }else {
-                Toast.makeText(context,"This theme hasn't been locked yet",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"This theme hasn't been unlocked yet",Toast.LENGTH_SHORT).show();
             }
 
         });
