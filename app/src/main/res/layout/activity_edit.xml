@@ -4,13 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.happydiary.Zeyu.EditActivity">
+    android:id="@+id/mView"
+    tools:context="com.example.happydiary.EditActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarEdit"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white">
+        >
+
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.023"
+            app:srcCompat="@mipmap/ic_back" />
 
 
         <EditText
@@ -31,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/toolbarEdit"
-        android:background="@color/white"
+
 
 
 
@@ -47,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:background="@color/white"
+
 
             android:paddingTop="12dp"
             android:textColor="@color/black"
@@ -67,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarEditLoc"
-        android:background="#faf7f7"
+
         android:gravity="top|left"
         android:padding="15dp"
         android:textColor="@color/black"

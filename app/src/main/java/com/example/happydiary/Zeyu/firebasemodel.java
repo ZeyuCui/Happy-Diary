@@ -44,4 +44,3 @@ public class firebasemodel {
         this.location = location;
     }
 }
-

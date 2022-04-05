@@ -1,9 +1,14 @@
-package com.example.happydiary.Zeyu;
+package com.example.happydiary;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+
+import android.widget.RelativeLayout;
+
+import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +23,9 @@ public class ReadActivity extends AppCompatActivity {
 
     private TextView mtitleRead, mcontentRead,mLocationRead;
     FloatingActionButton editButton;
+    ImageView backimg;
+
+    RelativeLayout mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +35,15 @@ public class ReadActivity extends AppCompatActivity {
         mcontentRead =findViewById(R.id.contentRead);
         editButton =findViewById(R.id.readDiary);
         mLocationRead = findViewById(R.id.readLocation);
+        mView=findViewById(R.id.mView);
         Toolbar toolbar=findViewById(R.id.toolbarRead);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        backimg=findViewById(R.id.icon_back);
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Intent data=getIntent();
 
@@ -52,14 +66,13 @@ public class ReadActivity extends AppCompatActivity {
 
     }
 
+
+
+
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId()==android.R.id.home)
-        {
-            onBackPressed();
-        }
-
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        mView.setBackgroundColor(getColor(SP.getInstance(this).getInt("theme", R.color.white)));
     }
+
 }

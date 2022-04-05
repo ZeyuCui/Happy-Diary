@@ -2,15 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
     tools:context="com.example.happydiary.FirstFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView1"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="392dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="15dp"
+        />
+
+    <TextView
+        android:id="@+id/hinttext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="swipe to refresh the content"
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        />
 </FrameLayout>

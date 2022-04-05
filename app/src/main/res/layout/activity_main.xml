@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+
+    android:id="@+id/mView"
+
     tools:context="com.example.happydiary.MainActivity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,9 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:fontFamily="cursive"
             android:paddingTop="20dp"
             android:text="HappyDiary"
-            android:fontFamily="cursive"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -59,11 +61,26 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.google.android.material.tabs.TabLayout
-                android:layout_width="match_parent"
+                android:id="@+id/tabLayout"
+                android:layout_width="321dp"
                 android:layout_height="wrap_content"
-                app:tabTextColor="@color/black"
-                android:id="@+id/tabLayout" />
+                app:tabTextColor="@color/black" />
+
+            <Button
+                android:id="@+id/tab"
+                android:layout_width="wrap_content"
+                android:background="@color/yellow1"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="1dp"
+                android:layout_toEndOf="@+id/tabLayout"
+                android:text="tags"
+                android:textSize="15dp"
+                android:textColor="@color/black"/>
+
 
         </RelativeLayout>
 
@@ -75,7 +92,6 @@
             android:layout_below="@id/tabLayout"
             android:id="@+id/view_pager2"/>
     </LinearLayout>
-
 
 
 </LinearLayout>

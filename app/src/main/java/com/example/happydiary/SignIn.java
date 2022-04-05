@@ -2,6 +2,7 @@ package com.example.happydiary;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +19,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 
 public class SignIn extends AppCompatActivity {
@@ -34,6 +38,11 @@ public class SignIn extends AppCompatActivity {
     private Button createAccountBtn;
     private TextView forgotPW;
 
+
+    ConstraintLayout mView;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,24 +51,15 @@ public class SignIn extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+
+        mView=findViewById(R.id.mView);
+
         // set up elements
         emailInput = (EditText) findViewById(R.id.input_email);
         pwInput = (EditText) findViewById(R.id.input_password);
         signInBtn = (Button) findViewById(R.id.button_signIn);
         createAccountBtn = (Button) findViewById(R.id.button_createAccountPage);
         forgotPW = (TextView) findViewById(R.id.link_forgotPW);
-
-       /* reference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userRecord=snapshot.getValue().toString();
-                System.out.println(userRecord);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
 
         // click listeners
         signInBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +68,16 @@ public class SignIn extends AppCompatActivity {
                 // get email / password
                 String email = emailInput.getText().toString();
                 String password = pwInput.getText().toString();
-                signIn(email, password);
+
+                if(email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(SignIn.this, "Enter your email and password", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    signIn(email, password);
+                }
+
+
+
             }
         });
         createAccountBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +96,8 @@ public class SignIn extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     @Override
@@ -99,25 +110,39 @@ public class SignIn extends AppCompatActivity {
         }
     }
 
-    public void signIn(String email, String password) {
+    protected void signIn(String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Toast.makeText(SignIn.this, "Welcome back", Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
 
-                            //Intent intent = new Intent(SignIn.this, MainActivity.class);
-                            Intent intent = new Intent(SignIn.this, ListActivity.class);
-                            startActivity(intent);
+                            if(user.isEmailVerified()) {
+                                Intent intent = new Intent(SignIn.this, CalendarMainActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(SignIn.this, "Please verify email", Toast.LENGTH_SHORT).show();
+                                FirebaseAuth.getInstance().signOut();
+                            }
+
                         }
                         else {
-                            Toast.makeText(SignIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
 
                 });
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mView.setBackgroundColor(getColor(SP.getInstance(this).getInt("theme", R.color.white)));
+    }
+
 }

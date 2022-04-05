@@ -1,4 +1,4 @@
-package com.example.happydiary.Zeyu;
+package com.example.happydiary;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -58,33 +64,46 @@ public class CreateActivity extends AppCompatActivity{
     FloatingActionButton savediary;
     ImageView myLocButton;
     String loc;
+    FirebaseDatabase root;
+    DatabaseReference reference;
+    ImageView backimg;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
     ProgressBar myprog;
+    String userRecord;
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
+
+    RelativeLayout mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
+        mView=findViewById(R.id.mView);
         savediary =findViewById(R.id.savenote);
         mycontent =findViewById(R.id.createContent);
         mytitle =findViewById(R.id.createTitle);
         myprog =findViewById(R.id.progressbar);
         myLocText =findViewById(R.id.createLocation);
         myLocButton = findViewById(R.id.buttonLocation);
+        backimg=findViewById(R.id.icon_back);
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
+
+        root= FirebaseDatabase.getInstance();
+        reference=root.getReference("userdate");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
-        Toolbar toolbar=findViewById(R.id.toolbarCreate);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Date date=new Date();
         SimpleDateFormat dateFormat=new SimpleDateFormat("dd MMM yyyy");
@@ -97,6 +116,20 @@ public class CreateActivity extends AppCompatActivity{
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         loc="unknown";
 
+       /* reference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userRecord=snapshot.getValue().toString();
+                System.out.println(userRecord);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
+
+
 
 
         //get location
@@ -108,6 +141,14 @@ public class CreateActivity extends AppCompatActivity{
                 getLocation();
                 //myLocText.setText(defaultLoc);
 
+            }
+        });
+
+        myLocText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationEnabled();
+                getLocation();
             }
         });
 
@@ -126,6 +167,7 @@ public class CreateActivity extends AppCompatActivity{
                 }
                 else {
                     myprog.setVisibility(View.VISIBLE);
+                    reference.child(firebaseUser.getUid()).setValue(userRecord+title+",");
                     DocumentReference documentReference = firebaseFirestore.collection("notes").document(firebaseUser.getUid()).collection("Full").document();
                     Map<String, Object> diary = new HashMap<>();
                     diary.put("title", title);
@@ -135,8 +177,8 @@ public class CreateActivity extends AppCompatActivity{
                     documentReference.set(diary).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(), "Note Created Succesffuly", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(CreateActivity.this, ListActivity.class));
+                            Toast.makeText(getApplicationContext(),"Note Created Succesffuly",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(CreateActivity.this, MainActivity.class));
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -306,16 +348,12 @@ public class CreateActivity extends AppCompatActivity{
     }
 
 
+
+
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId()==android.R.id.home)
-        {
-            onBackPressed();
-        }
-
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        mView.setBackgroundColor(getColor(SP.getInstance(this).getInt("theme", R.color.white)));
     }
-
 
 }

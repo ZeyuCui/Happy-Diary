@@ -2,11 +2,19 @@
     <string name="app_name">HappyDiaryy</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="password">Password</string>
-    <string name="name">Name</string>
     <string name="forgot_password">Forgot password</string>
     <string name="happy_diary">Happy Diary</string>
     <string name="email">Email</string>
     <string name="create_account">Create Account</string>
     <string name="sign_in">Sign In</string>
     <string name="pasword">Pasword</string>
+    <string name="verified_password_must_match_password">Verified password must match password</string>
+    <string name="settings">Settings</string>
+    <string name="name">Name</string>
+
+    <string name="enter_your_email">Enter your email</string>
+    <string name="reset_password">Reset password</string>
+
+    <string name="select">Select Tag</string>>
+
 </resources>

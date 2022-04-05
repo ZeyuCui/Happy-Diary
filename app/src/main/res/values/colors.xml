@@ -20,4 +20,22 @@
     <color name="yellow">#F3DB0E</color>
     <color name="dark_yellow">#E69C2F</color>
     <color name="lightyellow">#ffe0ac</color>
+
+
+
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white_one">#FFFFFF</color>
+    <color name="text_one">#333333</color>
+    <color name="windowBackground">#5DB5DD</color>
+
+
+    <color name="yellow1">#FFFAA0</color>
+    <color name="cream">#FFFDD0</color>
+    <color name="peach">#FFF5EE</color>
+    <color name="cornsilk">#FFF8DC</color>
+
+
 </resources>

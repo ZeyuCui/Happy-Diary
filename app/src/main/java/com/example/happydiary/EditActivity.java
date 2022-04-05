@@ -1,4 +1,4 @@
-package com.example.happydiary.Zeyu;
+package com.example.happydiary;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.happydiary.Zeyu.firebasemodel;
 import com.example.happydiaryy.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,6 +47,7 @@ public class EditActivity extends AppCompatActivity {
     EditText mtitleEdit, mcontentEdit;
     TextView mLocationEdit;
     FloatingActionButton mSaveEdit;
+    ImageView backimg;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -52,10 +56,16 @@ public class EditActivity extends AppCompatActivity {
     String newFull;
 
 
+    RelativeLayout mView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        mView=findViewById(R.id.mView);
+
         mtitleEdit =findViewById(R.id.editTitle);
         mcontentEdit =findViewById(R.id.editContent);
         mSaveEdit =findViewById(R.id.saveEdit);
@@ -68,8 +78,14 @@ public class EditActivity extends AppCompatActivity {
 
 
         Toolbar toolbar=findViewById(R.id.toolbarEdit);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        backimg=findViewById(R.id.icon_back);
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
 
 
 
@@ -78,9 +94,10 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),"savebuton click",Toast.LENGTH_SHORT).show();
 
-                String newtitle= mtitleEdit.getText().toString();
+                String newtitle= data.getStringExtra("title");
                 String newcontent= mcontentEdit.getText().toString();
                 String newloc = data.getStringExtra("location");
+                String originconten = data.getStringExtra("content");
 
 
                 if(newtitle.isEmpty()||newcontent.isEmpty())
@@ -104,7 +121,7 @@ public class EditActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getApplicationContext(),"Note is updated",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(EditActivity.this,ListActivity.class));
+                            startActivity(new Intent(EditActivity.this,MainActivity.class));
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -119,12 +136,18 @@ public class EditActivity extends AppCompatActivity {
                         String[] sKey= StringUtils.substringsBetween(newcontent, "<", ">");
                         String[] sValue= StringUtils.substringsBetween(newcontent, ">", "<");
                         String last = StringUtils.substringAfterLast(newcontent,">");
-                        //delete all the sub notes of this day's old diary
-                        for(int i=0;i<sKey.length;i++)
+                        //delete all the sub notes of this day
+
+                      if(originconten.contains("<")&& originconten.contains(">")){
+
+                            String[] oldKey= StringUtils.substringsBetween(originconten, "<", ">");
+                            String[] oldValue= StringUtils.substringsBetween(originconten, ">", "<");
+                            String oldlast = StringUtils.substringAfterLast(originconten,">");
+                        for(int i=0;i<oldKey.length;i++)
                         {
                             FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
                             CollectionReference itemsRef = rootRef.collection("notes");
-                            Query query = itemsRef.document(firebaseUser.getUid()).collection(sKey[i]).whereEqualTo("title",newtitle);
+                            Query query = itemsRef.document(firebaseUser.getUid()).collection(oldKey[i]).whereEqualTo("title",newtitle);
                             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -139,7 +162,7 @@ public class EditActivity extends AppCompatActivity {
                             });
 
 
-                        }
+                        }}
                         //create new sub notes of this day
                         for(int i=0;i<sKey.length;i++)
                         {
@@ -223,14 +246,10 @@ public class EditActivity extends AppCompatActivity {
         mLocationEdit.setText(diaryloc);
     }
 
+
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId()==android.R.id.home)
-        {
-            onBackPressed();
-        }
-
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        mView.setBackgroundColor(getColor(SP.getInstance(this).getInt("theme", R.color.white)));
     }
 }

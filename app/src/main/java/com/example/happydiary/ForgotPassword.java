@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -28,6 +29,14 @@ public class ForgotPassword extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        ImageView back = (ImageView)findViewById(R.id.icon_backSettings);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         emailInput = (EditText) findViewById(R.id.input_email_resetPW);
         reset = (Button) findViewById(R.id.button_resetPW);
 
@@ -37,7 +46,13 @@ public class ForgotPassword extends AppCompatActivity {
 
                 String email = emailInput.getText().toString();
 
-                resetPW(email);
+                if(email.isEmpty()) {
+                    Toast.makeText(ForgotPassword.this, "Input email", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    resetPW(email);
+                }
+
             }
         });
 

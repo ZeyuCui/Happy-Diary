@@ -47,11 +47,11 @@
                 </TextView>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
                     android:id="@+id/itemmenu"
                     android:layout_weight="0"
-                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:src="@drawable/more"
                     ></ImageView>
 
 

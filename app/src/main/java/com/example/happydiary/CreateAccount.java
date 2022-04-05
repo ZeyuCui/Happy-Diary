@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.happydiary.Zeyu.CreateActivity;
+import com.example.happydiary.CreateActivity;
 import com.example.happydiary.Zeyu.ListActivity;
 import com.example.happydiaryy.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -150,34 +150,38 @@ public class CreateAccount extends AppCompatActivity {
                                             Toast.makeText(CreateAccount.this, "A verification link has been sent to your email", Toast.LENGTH_LONG).show();
 
                                             //create new user guidance
-                                            DocumentReference documentReference = firebaseFirestore.collection("notes").document(firebaseUser.getUid()).collection("Full").document();
-                                            Map<String, Object> diary = new HashMap<>();
-                                            diary.put("title", date);
-                                            diary.put("location",location);
-                                            diary.put("content", userguidance);
-                                            diary.put("userid", firebaseUser.getUid());
-                                            documentReference.set(diary);
+                                            if(firebaseUser!=null) {
+                                                DocumentReference documentReference = firebaseFirestore.collection("notes").document(firebaseUser.getUid()).collection("Full").document();
+                                                Map<String, Object> diary = new HashMap<>();
+                                                diary.put("title", date);
+                                                diary.put("location", location);
+                                                diary.put("content", userguidance);
+                                                diary.put("userid", firebaseUser.getUid());
+                                                documentReference.set(diary);
 
-                                            if (userguidance.contains("<") && userguidance.contains(">")){
-                                                String[] sKey = StringUtils.substringsBetween(userguidance, "<", ">");
-                                                String[] sValue = StringUtils.substringsBetween(userguidance, ">", "<");
-                                                String last = StringUtils.substringAfterLast(userguidance, ">");
-                                                for (int i = 0; i < sKey.length; i++) {
-                                                    documentReference = firebaseFirestore.collection("notes").document(firebaseUser.getUid()).collection(sKey[i]).document();
-                                                    DocumentReference referenceTag= firebaseFirestore.collection("tags").document(firebaseUser.getUid()).collection("tag").document();
-                                                    Map<String, Object> tag = new HashMap<>();
-                                                    tag.put("tagvalue",sKey[i]);
-                                                    referenceTag.set(tag);
-                                                    diary = new HashMap<>();
-                                                    diary.put("title", date);
-                                                    diary.put("location", location);
-                                                    diary.put("userid", firebaseUser.getUid());
-                                                    if (i < sKey.length - 1)
-                                                        diary.put("content", sValue[i]);
-                                                    else
-                                                        diary.put("content", last);
-                                                    documentReference.set(diary);}}
-                                            reference.child(firebaseUser.getUid()).setValue(date+",");
+                                                if (userguidance.contains("<") && userguidance.contains(">")) {
+                                                    String[] sKey = StringUtils.substringsBetween(userguidance, "<", ">");
+                                                    String[] sValue = StringUtils.substringsBetween(userguidance, ">", "<");
+                                                    String last = StringUtils.substringAfterLast(userguidance, ">");
+                                                    for (int i = 0; i < sKey.length; i++) {
+                                                        documentReference = firebaseFirestore.collection("notes").document(firebaseUser.getUid()).collection(sKey[i]).document();
+                                                        DocumentReference referenceTag = firebaseFirestore.collection("tags").document(firebaseUser.getUid()).collection("tag").document();
+                                                        Map<String, Object> tag = new HashMap<>();
+                                                        tag.put("tagvalue", sKey[i]);
+                                                        referenceTag.set(tag);
+                                                        diary = new HashMap<>();
+                                                        diary.put("title", date);
+                                                        diary.put("location", location);
+                                                        diary.put("userid", firebaseUser.getUid());
+                                                        if (i < sKey.length - 1)
+                                                            diary.put("content", sValue[i]);
+                                                        else
+                                                            diary.put("content", last);
+                                                        documentReference.set(diary);
+                                                    }
+                                                }
+                                                reference.child(firebaseUser.getUid()).setValue(date + ",");
+                                            }
 
                                             // back to sign in
                                             finish();

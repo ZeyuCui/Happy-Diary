@@ -13,15 +13,28 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyDiaryy">
-        <activity android:name="com.example.happydiary.Zeyu.ReadActivity"
+
+        <activity
+            android:name="com.example.happydiary.ChangeThemeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.example.happydiary.CalendarMainActivity"
+            android:exported="false"/>
+
+
+        <activity android:name="com.example.happydiary.ReadActivity"
             android:exported="false"/>
         <activity android:name="com.example.happydiary.Zeyu.ListActivity"
             android:exported="false"/>
         <activity
-            android:name="com.example.happydiary.Zeyu.EditActivity"
+            android:name="com.example.happydiary.EditActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.happydiary.Zeyu.CreateActivity"
+            android:name="com.example.happydiary.CreateActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.happydiary.Settings"
             android:exported="false" />
         <activity
             android:name="com.example.happydiary.ForgotPassword"
